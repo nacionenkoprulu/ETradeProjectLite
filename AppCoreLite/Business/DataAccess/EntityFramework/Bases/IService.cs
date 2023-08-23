@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppCoreLite.DataAccess.EntityFramework.Bases
+namespace AppCoreLite.Business.DataAccess.EntityFramework.Bases
 {
     public interface IService<TEntity> : IDisposable where TEntity : Record, new()
     {
@@ -22,6 +22,6 @@ namespace AppCoreLite.DataAccess.EntityFramework.Bases
 
         int Save();
 
-        
+
     }
 }
