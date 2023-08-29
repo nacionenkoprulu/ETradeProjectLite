@@ -11,10 +11,12 @@ namespace MVC.Controllers
     {
         // Add service injections here
         private readonly ProductServiceBase _productService;
+        private readonly CategoryServiceBase _categoryService;
 
-        public ProductsController(ProductServiceBase productService)
+        public ProductsController(ProductServiceBase productService, CategoryServiceBase categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
         // GET: Products
@@ -27,10 +29,10 @@ namespace MVC.Controllers
         // GET: Products/Details/5
         public IActionResult Details(int id)
         {
-            Product product = null; // TODO: Add get item service logic here
+            Product product = _productService.Query(p => p.Category).SingleOrDefault(p => p.Id == id); // TODO: Add get item service logic here
             if (product == null)
             {
-                return NotFound();
+                return View("_Error", "Product not found!");
             }
             return View(product);
         }
@@ -39,7 +41,9 @@ namespace MVC.Controllers
         public IActionResult Create()
         {
             // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
-            ViewData["CategoryId"] = new SelectList(null, "Id", "Name");
+            List<Category> categories = _categoryService.Query().ToList();
+
+            ViewBag.CategoryId = new SelectList(categories, "Id", "Name");
             return View();
         }
 
@@ -52,24 +56,31 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: Add insert service logic here
-                return RedirectToAction(nameof(Index));
+                var result = _productService.Add(product);
+
+                if(result.IsSuccessfully)
+                {
+                    TempData["Message"] = result.Message;
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ViewData["Message"] = result.Message;
             }
             // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
-            ViewData["CategoryId"] = new SelectList(null, "Id", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_categoryService.Query().ToList(), "Id", "Name");
             return View(product);
         }
 
         // GET: Products/Edit/5
         public IActionResult Edit(int id)
         {
-            Product product = null; // TODO: Add get item service logic here
+            Product product = _productService.Query().SingleOrDefault(p => p.Id == id);
             if (product == null)
             {
-                return NotFound();
+                return View("_Error", "Product not found!");
             }
             // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
-            ViewData["CategoryId"] = new SelectList(null, "Id", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_categoryService.Query().ToList(), "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -82,31 +93,39 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                // TODO: Add update service logic here
-                return RedirectToAction(nameof(Index));
+                var result = _productService.Update(product);
+                if (result.IsSuccessfully)
+                {
+                    TempData["Message"] = result.Message;
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ModelState.AddModelError("", result.Message);
             }
             // Add get related items service logic here to set ViewData if necessary and update null parameter in SelectList with these items
-            ViewData["CategoryId"] = new SelectList(null, "Id", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_categoryService.Query().ToList(), "Id", "Name", product.CategoryId);
             return View(product);
         }
 
         // GET: Products/Delete/5
         public IActionResult Delete(int id)
         {
-            Product product = null; // TODO: Add get item service logic here
+            Product product = _productService.Query().SingleOrDefault(p => p.Id == id);
             if (product == null)
             {
-                return NotFound();
+                return View("_Error", "Product not found!");
             }
             return View(product);
         }
 
         // POST: Products/Delete
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")] //Attiribute --> Action Filter
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            // TODO: Add delete service logic here
+            var result = _productService.Delete(p => p.Id == id);
+            TempData["Message"] = result.Message;
+
             return RedirectToAction(nameof(Index));
         }
 	}

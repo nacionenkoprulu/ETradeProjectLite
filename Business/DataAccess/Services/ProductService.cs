@@ -1,4 +1,6 @@
 ﻿using AppCoreLite.Business.DataAccess.EntityFramework.Bases;
+using AppCoreLite.Results;
+using AppCoreLite.Results.Bases;
 using Business.Contexts;
 using Business.DataAccess.Contexts;
 using Business.DataAccess.Entities;
@@ -32,11 +34,17 @@ namespace Business.DataAccess.Services
             return base.Query(entitiesToIncludes).Select(p=> new Product()
             {
                 Id = p.Id,
+                Guid = p.Guid,
                 Name = p.Name,
                 StockAmount = p.StockAmount,
                 Category = p.Category,
+                UnitPrice = p.UnitPrice,
+                CategoryId = p.CategoryId,
+                Description = p.Description,
+                ExpirationDate = p.ExpirationDate,
+                IsContinued = p.IsContinued,
 
-                UnitPriceDisplay = p.UnitPrice.ToString("C2", new CultureInfo("en-US")),
+                UnitPriceDisplay = p.UnitPrice.HasValue ? p.UnitPrice.Value.ToString("C2", new CultureInfo("en-US")): "",
                 IsContinuedDisplay = p.IsContinued ? "Yes" : "No",
                 ExpirationDateDisplay = p.ExpirationDate.HasValue ? p.ExpirationDate.Value.ToString("MM/dd/yyyy", new CultureInfo("en-US")) : ""
 
@@ -44,7 +52,32 @@ namespace Business.DataAccess.Services
         }
 
 
+        public override Result Add(Product entity, bool save = true)
+        {
+
+            if(Query().Any(p=>p.Name.ToLower() == entity.Name.ToLower().Trim()))
+            {
+                return new ErrorResult("Product with the same name exists!");
+            }
+            entity.Name = entity.Name.Trim();
+            entity.Description = entity.Description?.Trim();
+            entity.IsContinued = true;
+            return base.Add(entity, save);
+        }
+
+		public override Result Update(Product entity, bool save = true)
+		{
+
+            if (Query().Any(p => p.Name.ToLower() == entity.Name.ToLower().Trim() && p.Id != entity.Id))
+                return new ErrorResult("Product with the same name exist!");
+
+            entity.Name = entity.Name.Trim();
+            entity.Description = entity.Description?.Trim();
+
+			return base.Update(entity, save);
+		}
 
 
-    }
+
+	}
 }

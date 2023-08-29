@@ -3,7 +3,7 @@
 @*Model namespace using directive should be added to _ViewImports.cshtml.*@
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Product";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -15,6 +15,7 @@
         <form asp-action="Edit">
 		@Html.AntiForgeryToken()
             <div asp-validation-summary="All" class="text-danger"></div>
+
             <div class="row mb-3">
                 <label asp-for="Name" class="col-2 col-form-label"></label>
 				<div class="col-5">
@@ -65,8 +66,10 @@
 					<span asp-validation-for="CategoryId" class="text-danger"></span>
 				</div>
             </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="row mb-3">
+            
+			<input type="hidden" asp-for="Id" />
+            
+			<div class="row mb-3">
                 <label asp-for="Guid" class="col-2 col-form-label"></label>
 				<div class="col-5">
 					<input asp-for="Guid" class="form-control" />
@@ -79,7 +82,7 @@
 					&nbsp;&nbsp;
                     <button type="reset" class="btn btn-outline-primary">Reset</button>
 					&nbsp;&nbsp;
-					<a asp-action="Index">Back to List</a>
+					<a asp-action="Index">Back to Product List</a>
 				</div>
             </div>
         </form>

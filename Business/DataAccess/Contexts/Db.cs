@@ -15,6 +15,8 @@ namespace Business.Contexts
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<Store> Stores { get; set; }
+
 
         public Db(DbContextOptions option) : base(option)
         {

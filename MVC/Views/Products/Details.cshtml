@@ -3,68 +3,21 @@
 @*Model namespace using directive should be added to _ViewImports.cshtml.*@
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Product Details";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.StockAmount)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.StockAmount)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.UnitPrice)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.UnitPrice)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.ExpirationDate)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.ExpirationDate)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.IsContinued)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.IsContinued)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt class="col-2">
-            @Html.DisplayNameFor(model => model.Guid)
-        </dt>
-        <dd class="col-10">
-            @Html.DisplayFor(model => model.Guid)
-        </dd>
-    </dl>
-</div>
+
+@*@await Html.PartialAsync("_Details", Model) *@ @*1. Yöntem: _Details'in içindeki burada çağırdık.*@
+
+
+<partial name="_Details" model="Model" />  @*2. Yöntem: _Details'in içindeki burada çağırdık.*@
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>&nbsp;|&nbsp;
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Product List</a>
 </div>
 
 

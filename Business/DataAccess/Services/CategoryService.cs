@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,5 +26,15 @@ namespace Business.DataAccess.Services
         public CategoryService(Db db) : base(db)
         {
         }
+
+
+        public override IQueryable<Category> Query(params Expression<Func<Category, object>>[] entitiesToIncludes)
+        {
+            return base.Query(entitiesToIncludes).OrderBy(c=>c.Name);
+        }
+
+
+
+
     }
 }

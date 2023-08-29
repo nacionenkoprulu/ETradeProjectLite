@@ -69,7 +69,7 @@ namespace AppCoreLite.Business.DataAccess.EntityFramework.Bases
             if (save)
             {
                 Save();
-                return new SuccessResult(UPDATEDMESSAGE);
+                return new SuccessResult(ADDEDMESSAGE);
             }
             return new ErrorResult(ERRORMESSAGE);
         }
@@ -81,7 +81,7 @@ namespace AppCoreLite.Business.DataAccess.EntityFramework.Bases
             if (save)
             {
                 Save();
-                return new SuccessResult(ADDEDMESSAGE);
+                return new SuccessResult(UPDATEDMESSAGE);
             }
             return new ErrorResult(ERRORMESSAGE);
         }
@@ -112,7 +112,9 @@ namespace AppCoreLite.Business.DataAccess.EntityFramework.Bases
             }
             catch (Exception exc)
             {
-                //Logglama işlemleri yapılması gerekiyor.
+                // exc.Message üzerinden veritabanındaki log tablosunda veya log dosyasında loglama kodları
+                // ile beklenmedik hata kayıtları tutulabilir,
+                // NLog veya Log4Net gibi kütüphaneler üzerinden loglama yönetimi yapılması en uygunudur
                 throw exc;
             }
 

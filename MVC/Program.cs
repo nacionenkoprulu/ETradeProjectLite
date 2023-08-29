@@ -13,6 +13,7 @@ builder.Services.AddDbContext<Db>(options => options.UseSqlServer(connectionStri
 
 builder.Services.AddScoped<ProductServiceBase, ProductService>();
 builder.Services.AddScoped<CategoryServiceBase, CategoryService>();
+builder.Services.AddScoped<StoreServiceBase,StoreService>();
 
 #endregion
 

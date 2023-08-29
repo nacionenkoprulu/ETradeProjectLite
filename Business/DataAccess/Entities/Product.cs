@@ -10,25 +10,31 @@ namespace Business.DataAccess.Entities
     #region Entity
     public partial class Product : Record
     {
-        [Required]
-        [MinLength(3)]
-        [MaxLength(200)]
+        [Required(ErrorMessage = "{0} is required!")]
+        [MinLength(3, ErrorMessage = "{0} must be min {1} characters!")]
+        [MaxLength(200, ErrorMessage = "{0} must be max {1} characters!")]
         public string Name { get; set; }
 
-        [StringLength(300)]
+        [StringLength(300, ErrorMessage = "{0} must be max {1} characters!")]
         public string Description { get; set; }
 
-        [Range(0, 1000000)]
+        [Required(ErrorMessage = "{0} is required!")] //Zorunludur mesajını alabilmek için bunu koyduk
+        [Range(0, 1000000, ErrorMessage = "{0} must be {1} or positive!")] 
         [DisplayName("Stock Amount")]
-        public int StockAmount { get; set; }
+        public int? StockAmount { get; set; } //Normalde soru işareti koymaya gerek yok ancak zorunludur error mesajını almak için bu yöntemi uyguladık.
 
+        [Required(ErrorMessage = "{0} is required!")] //Zorunludur mesajını alabilmek için bunu koyduk
         [Range(0, double.MaxValue)]
-        public double UnitPrice { get; set; }
+        [DisplayName("Unit Price")]
+        public double? UnitPrice { get; set; } //Normalde soru işareti koymaya gerek yok ancak zorunludur error mesajını almak için bu yöntemi uyguladık.
 
+        [DisplayName("Expiration Date")]
         public DateTime? ExpirationDate { get; set; }
 
+        [DisplayName("Continued")]
         public bool IsContinued { get; set; }
 
+        [DisplayName("Category")]
         public int? CategoryId { get; set; }
 
         public Category Category { get; set; }
